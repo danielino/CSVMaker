@@ -28,8 +28,6 @@ export into file
 $csv->ExportFile();                                     export into file
 
 print into stdout
-$csv->ExportPrint();                                    print in std output
+$csv->ExportPrint();                                    print in stdout
 
-
-Export Table
 ```
