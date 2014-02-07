@@ -219,8 +219,15 @@ class CSVmaker
         
         // format field=:field
         if( $this->condition )
-            $data .= " WHERE ".$this->condition;
+            $sql .= " WHERE ".$this->condition;
         
+<<<<<<< HEAD
+=======
+        // limit results
+        if( is_int($this->max_row) && $this->max_row > 0 )
+            $sql .= " LIMIT ".$this->max_row;
+        
+>>>>>>> 8dccfbb... fix writing's error
         // check for params
         if( $this->condition && (!is_array($this->params) || count($this->params) == 0) )
             throw new Exception ("you've specified condition without params");
