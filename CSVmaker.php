@@ -226,11 +226,11 @@ class CSVmaker
         
         // format field=:field
         if( $this->condition )
-            $data .= " WHERE ".$this->condition;
+            $sql .= " WHERE ".$this->condition;
         
         // limit results
         if( is_int($this->max_row) && $this->max_row > 0 )
-            $data .= " LIMIT ".$this->max_row;
+            $sql .= " LIMIT ".$this->max_row;
         
         // check for params
         if( $this->condition && (!is_array($this->params) || count($this->params) == 0) )
