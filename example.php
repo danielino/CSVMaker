@@ -16,7 +16,7 @@ $csv->ExportPrint();                                    print in std output
 
 $csv = new CSVmaker();
 $csv->table = 'table_example';
-$csv->field = 'id_example, user_example, pass_example'
+$csv->field = 'id_example, user_example, pass_example';
 $csv->ExportFile();
 
 
