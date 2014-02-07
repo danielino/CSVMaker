@@ -31,7 +31,7 @@ class CSVmaker
     private $_dsn;
     private $_db_adapter;
     
-    public $max_row;                // int            
+    public $maxRows;                // int            
     public $table;                  // string
     public $field = array();        
     public $condition;              // 'field_id_table = :id'
@@ -229,8 +229,8 @@ class CSVmaker
             $sql .= " WHERE ".$this->condition;
         
         // limit results
-        if( is_int($this->max_row) && $this->max_row > 0 )
-            $sql .= " LIMIT ".$this->max_row;
+        if( is_int($this->$maxRows) && $this->$maxRows > 0 )
+            $sql .= " LIMIT ".$this->$maxRows;
         
         // check for params
         if( $this->condition && (!is_array($this->params) || count($this->params) == 0) )
