@@ -7,6 +7,7 @@ require_once 'CSVmaker.php';
 $csv = new CSVmaker();                          
 $csv->table = $tableName;                               [required]
 $csv->field = $fieldName;                               [required] 
+$csv->maxRows = int_number                              [optional]
 $csv->condition = 'fieldName = :value';                 [optional] *require params
 $csv->params = array('value' => 'string_to_match');     [optional]
 $csv->exportPath = '/tmp'; // default is current dir.   [optional]

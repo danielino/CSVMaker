@@ -6,6 +6,7 @@
  * @category   Csv Maker
  * @package    CSVmaker
  * @author     Daniele Marcocci <danielinor0x@hotmail.com>
+ * @link       https://github.com/danielino/CSVMaker
  *
  *
  * This class extract data from mysql
@@ -30,8 +31,8 @@ class CSVmaker
     private $_dsn;
     private $_db_adapter;
     
-    public $max_row;                
-    public $table;                  
+    public $max_row;                // int            
+    public $table;                  // string
     public $field = array();        
     public $condition;              // 'field_id_table = :id'
     public $params = array();       // array('id'=>$id)
@@ -50,26 +51,14 @@ class CSVmaker
         $this->_db_pass = '';
         $this->_db_name = '';
         
-        
-        $this->__init();
-    }
-
-    /**
-     * Initialize mysql db connection
-     */
-    private function __init()
-    {
-        // set exportPath
-        $this->exportPath = getcwd();
-        
-        $this->_dsn = $this->_db_adapter.':host=' . $this->_db_host .
-                     ';dbname=' . $this->_db_name;
-        $this->_instance = new PDO($this->_dsn, $this->_db_user, $this->_db_pass);
+        $this->__init();    // initialize pdo 
     }
 
 
+
+
     /**
-     * destroy db connection
+     * destroy pdo instance 
      */
     public function ___destruct()
     {
@@ -99,6 +88,26 @@ class CSVmaker
     }
     
     
+    
+    
+    
+    /***** private function *****/
+    
+    
+    /**
+     * Initialize mysql db connection
+     */
+    private function __init()
+    {
+        // set exportPath with current absolute path
+        $this->exportPath = getcwd();
+        
+        $this->_dsn = $this->_db_adapter.':host=' . $this->_db_host .
+                     ';dbname=' . $this->_db_name;
+        $this->_instance = new PDO($this->_dsn, $this->_db_user, $this->_db_pass);
+    }
+    
+    
     /**
      * query the db with PDO library 
      * @return string or boolean false if can't do query
@@ -113,11 +122,8 @@ class CSVmaker
         for($i = 0; $i < count($this->field) ; $i++)
             $data .= ($i < (count($this->field) - 1)) ? "\"". $this->field[$i] ."\"," : "\"". $this->field[$i] ."\"";
         $data .= "\n";
-        
-        
-        
-        // 
-        # remove the header before iterate array
+               
+        // remove the header before iterate array
         unset($allRes[0]);
         
         foreach($allRes as $value)
@@ -131,7 +137,7 @@ class CSVmaker
             foreach($value as $value2)  // create sequential array
                 $arr[] = rtrim($value2, '0x0D');     // remove ^M
             
-            
+            // create row
             while($j < count($arr)){
                 $data .=  '"'. $arr[$j] . (($j < (count($arr) - 1 )) ? "\"," : "\"");
                 $j++;
@@ -148,7 +154,7 @@ class CSVmaker
     
     
     /**
-     * 
+     * write data into file
      * @param string $data
      * @return boolean
      * @throws Exception "can't write into $path" | path is not writable
@@ -179,10 +185,10 @@ class CSVmaker
     
     
     /**
-     * 
+     *
      * @param string $path
      * @param string $suffix
-     * @param string $extension
+     * @param string $extension - default .csv
      * @return string fileName
      */
     private function createRandomFileName($path, $suffix = '', $extension = '.csv')
@@ -195,6 +201,7 @@ class CSVmaker
 
         $randName = substr(mt_rand(), 0, 3);    // select only 3 int
 
+        // absolute_path/suffixName-randomNumber.extension
         $file = $path."/export-".$suffix."-".$randName.$extension;
 
         return $file;
@@ -202,7 +209,7 @@ class CSVmaker
     
     
     /**
-     * selectAll row from MySQL
+     * select all row from MySQL
      * @return boolean or array $row
      */
     private function selectAll()
@@ -220,6 +227,10 @@ class CSVmaker
         // format field=:field
         if( $this->condition )
             $data .= " WHERE ".$this->condition;
+        
+        // limit results
+        if( is_int($this->max_row) && $this->max_row > 0 )
+            $data .= " LIMIT ".$this->max_row;
         
         // check for params
         if( $this->condition && (!is_array($this->params) || count($this->params) == 0) )

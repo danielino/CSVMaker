@@ -13,6 +13,9 @@ $csv->table = $tableName;                               [required]
 # set field comma separated
 $csv->field = $fieldName;                               [required] 
 
+# set max rows to be extracted
+$csv->maxRows = int_number                              [optional]
+
 # add condition
 $csv->condition = 'fieldName = :value';                 [optional] *require params
 
