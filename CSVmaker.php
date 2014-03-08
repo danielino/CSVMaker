@@ -234,7 +234,7 @@ class CSVmaker
         
         // check for params
         if( $this->condition && (!is_array($this->params) || count($this->params) == 0) )
-            throw new Exception ("you've specified condition without params");
+            throw new Exception ("you have specified condition without params");
         
         // prepare and execute query with or without params
         $res = $this->_instance->prepare($sql);
